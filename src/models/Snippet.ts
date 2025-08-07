@@ -1,32 +1,33 @@
-import { Schema , model, models, Document } from "mongoose";
+import mongoose, { Schema, model, models } from "mongoose";
 
-export interface ISnippet extends Document {
-    code : string;
-    language : string;
-    title : string;
-    createdAt : Date;
+export interface ISnippet {
+  title: string;
+  code: string;
+  language: string;
+  createdAt: Date;
 }
 
+const SnippetSchema = new Schema<ISnippet>(
+  {
+    title: {
+      type: String,
+      required: [true, 'Title is required.'],
+    },
+    code: {
+      type: String,
+      required: [true, 'Code is required.'],
+    },
+    language: {
+      type: String,
+      required: [true, 'Language is required.'],
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+);
 
-const SnippetSchema = new Schema<ISnippet>({
-    code : {
-        type : String,
-        required : [true, 'Code is required.'],
-    },
-    language : {
-        type: String,
-        required : [true, 'Code is required.'],
-    },
-    title : {
-        type : String,
-        required : [true, 'Code is required.'],
-    },
-    createdAt : {
-        type : Date,
-        default : Date.now,
-    },
-});
+const Snippet = models.Snippet || model<ISnippet>('Snippet', SnippetSchema);
 
-const Snippet = models.Snippet || model<ISnippet>('Snippet' , SnippetSchema);
-
-export default Snippet
+export default Snippet;

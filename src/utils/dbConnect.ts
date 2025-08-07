@@ -1,28 +1,25 @@
-import { promises } from "dns";
-import mongoose from "mongoose";
-import { buffer } from "stream/consumers";
+// utils/dbConnect.ts
+import mongoose from 'mongoose';
+
+const MONGODB_URI = process.env.MONGODB_URI!;
+
+if (!MONGODB_URI) throw new Error('MONGODB_URI not set in .env');
 
 let cached = (global as any).mongoose;
 
-if(!cached){
-    cached = (global as any).mongoose = { conn : null , promise : null};
+if (!cached) {
+  cached = (global as any).mongoose = { conn: null, promise: null };
 }
 
-export default async function dbConnect(){
+export default async function connectDB() {
+  if (cached.conn) return cached.conn;
 
-    if(cached.conn){
-        return cached.conn;
-    }
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(MONGODB_URI, {
+      bufferCommands: false,
+    });
+  }
 
-    if(!cached.promise){
-        const opts = {
-            bufferCommands : false
-        };
-
-        cached.promise = await mongoose.connect(process.env.MONGODB_URI! , opts).then((mongoose)=>{
-            return mongoose
-        });        
-    }
-    cached.conn = await cached.process;
-    return cached.conn;
+  cached.conn = await cached.promise;
+  return cached.conn;
 }

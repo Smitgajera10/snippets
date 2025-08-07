@@ -1,5 +1,7 @@
+'use client'
 import { useState, FormEvent } from 'react';
 import Head from 'next/head';
+import 'prismjs/themes/prism-okaidia.css';
 
 export default function Home() {
   const [code, setCode] = useState<string>('');
