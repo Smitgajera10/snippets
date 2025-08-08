@@ -19,13 +19,36 @@ export default function ClientCodeBlock({ code, language }: CodeBlockProps) {
     <div className="bg-[#2e3440] rounded-lg overflow-hidden shadow-md">
   {/* Carbon-style window header */}
   <div className="flex space-x-2 px-4 py-2 bg-[#21252b]">
-    <div className="w-3 h-3 bg-red-500 rounded-full" />
-    <div className="w-3 h-3 bg-yellow-500 rounded-full" />
-    <div className="w-3 h-3 bg-green-500 rounded-full" />
+    <span className="dot w-3 h-3 rounded-full bg-[#ff5f56]" /> 
+    <span className="dot w-3 h-3 rounded-full bg-[#ffbd2e]" /> 
+    <span className="dot w-3 h-3 rounded-full bg-[#27c93f]" />
+    <div>{language}</div>
   </div>
 
   {/* Code block */}
-  <SyntaxHighlighter language="javascript" style={oneDark} customStyle={{ margin: 0, padding: "1rem" }}>
+  <SyntaxHighlighter language={language} style={oneDark} customStyle={{ 
+                      margin: '1rem', 
+                      padding: '1rem',
+                      backgroundColor: 'transparent',
+                      minWidth: '100%',
+                      width: 'fit-content',
+                      minHeight: '100%'
+                    }}
+                    codeTagProps={{
+                      style: {
+                        fontFamily: '"Fira code", "Fira Mono", monospace',
+                        fontSize: '1rem',
+                        lineHeight: '1.5em',
+                      }
+                    }}
+                    lineProps={{
+                      style: {
+                        wordBreak: 'break-all',
+                        whiteSpace: 'pre-wrap'
+                      }
+                    }}
+                    wrapLines={true}
+                  >
     {code}
   </SyntaxHighlighter>
 </div>

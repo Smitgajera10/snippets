@@ -1,4 +1,4 @@
-import mongoose, { Schema, model, models } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 
 export interface ISnippet {
   title: string;
@@ -28,6 +28,7 @@ const SnippetSchema = new Schema<ISnippet>(
   },
 );
 
-const Snippet = models.Snippet || model<ISnippet>('Snippet', SnippetSchema);
+// Check if the model has already been defined before creating it
+const Snippet = mongoose.models.Snippet || model<ISnippet>('Snippet', SnippetSchema);
 
 export default Snippet;
