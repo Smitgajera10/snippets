@@ -11,6 +11,9 @@ const downloadImage = async () => {
   // Walk through all child nodes and patch colors
   const allElements = element.querySelectorAll("*");
 
+  const buttons = element.querySelectorAll('.capture-exclude');
+  buttons.forEach((button) => (button as HTMLElement).style.display = 'none');
+
   allElements.forEach((el) => {
   const computed = window.getComputedStyle(el);
 
@@ -55,7 +58,7 @@ export default function ClientWrapper({
   return (
     <>
       <div id="snippet-box" className="bg-gray-800 p-6 rounded-lg">
-        <ClientCodeBlock code={code} language={language} theme={theme} showCopyButton={true}/>
+        <ClientCodeBlock code={code} language={language} theme={theme}/>
       </div>
       <div className="flex justify-center">
         <button

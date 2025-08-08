@@ -7,10 +7,9 @@ interface CodeBlockProps {
   code: string;
   language: string;
   theme : ThemeKeys;
-  showCopyButton? : boolean;
 }
 
-export default function ClientCodeBlock({ code, language , theme , showCopyButton = true}: CodeBlockProps) {
+export default function ClientCodeBlock({ code, language , theme }: CodeBlockProps) {
   const [mounted, setMounted] = useState(false);
   const [copied, setCopied] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -35,14 +34,13 @@ export default function ClientCodeBlock({ code, language , theme , showCopyButto
         <span className="dot w-3 h-3 my-2 rounded-full bg-[#ffbd2e]" /> 
         <span className="dot w-3 h-3 my-2 rounded-full bg-[#27c93f]" />
         <div className='ml-2 font-mono text-xs text-gray-300 flex-1'>{language}</div>
-        {showCopyButton && (
-          <button
-            onClick={handleCopy}
-            className="ml-auto px-3 py-1 rounded bg-purple-700 hover:bg-purple-800 text-white text-xs font-mono transition"
-          >
-            {copied ? "Copied!" : "Copy"}
-          </button>
-        )}
+        <button
+          onClick={handleCopy}
+          className="capture-exclude ml-auto px-3 py-1 rounded bg-purple-700 hover:bg-purple-800 text-white text-xs font-mono transition"
+        >
+          {copied ? "Copied!" : "Copy"}
+        </button>
+
       </div>
 
       {/* Code block */}
