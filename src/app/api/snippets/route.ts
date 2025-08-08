@@ -6,16 +6,17 @@ export async function POST(req: Request) {
   await connectDB();
 
   try {
-    const { code, language, title } = await req.json();
+    const { code, language, title , theme } = await req.json();
 
-    if (!code || !language) {
-      return NextResponse.json({ error: 'Code and language are required.' }, { status: 400 });
+    if (!code || !language || !theme) {
+      return NextResponse.json({ error: 'Code ,language and theme are required.' }, { status: 400 });
     }
 
     const newSnippet = new Snippet({
       code,
       language,
       title: title || 'Untitled Snippet',
+      theme: theme || 'xonokai',
     });
 
     const savedSnippet = await newSnippet.save();

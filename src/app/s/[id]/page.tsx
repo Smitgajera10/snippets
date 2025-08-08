@@ -47,7 +47,6 @@ export default async function SnippetPage({ params }: { params: Promise<{ id: st
   const { id } = await params;
   await connectDB();
   const snippet = await Snippet.findById(id).lean();
-
   if (!snippet || typeof snippet !== 'object' || !('title' in snippet)) {
     notFound();
   }
@@ -56,7 +55,7 @@ export default async function SnippetPage({ params }: { params: Promise<{ id: st
     <div className="min-h-screen bg-gray-900 text-gray-200 p-8">
       <div className="max-w-4xl mx-auto my-12">
         <h1 className="text-3xl font-bold mb-4 text-white">{snippet.title}</h1>
-        <ClientWrapper code={snippet.code} language={snippet.language} />
+        <ClientWrapper code={snippet.code} language={snippet.language} theme={snippet.theme}/>
       </div>
     </div>
   );

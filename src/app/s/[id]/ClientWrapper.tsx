@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import html2canvas from "html2canvas";
+import { ThemeKeys } from "@/utils/themes";
 
 const downloadImage = async () => {
   const element = document.getElementById("snippet-box");
@@ -45,14 +46,16 @@ const ClientCodeBlock = dynamic(() => import("@/components/ClientCodeBlock"), {
 export default function ClientWrapper({
   code,
   language,
+  theme,
 }: {
   code: string;
   language: string;
+  theme : ThemeKeys;
 }) {
   return (
     <>
       <div id="snippet-box" className="bg-gray-800 p-6 rounded-lg">
-        <ClientCodeBlock code={code} language={language} />
+        <ClientCodeBlock code={code} language={language} theme={theme} showCopyButton={true}/>
       </div>
       <div className="flex justify-center">
         <button

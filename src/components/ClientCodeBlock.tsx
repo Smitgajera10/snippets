@@ -1,44 +1,69 @@
 'use client';
+import { ThemeKeys, themes } from '@/utils/themes';
 import { useEffect, useState } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-// Choose your theme
-import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 interface CodeBlockProps {
   code: string;
   language: string;
+  theme : ThemeKeys;
+  showCopyButton? : boolean;
 }
 
-export default function ClientCodeBlock({ code, language }: CodeBlockProps) {
+export default function ClientCodeBlock({ code, language , theme , showCopyButton = true}: CodeBlockProps) {
   const [mounted, setMounted] = useState(false);
+  const [copied, setCopied] = useState(false);
   useEffect(() => setMounted(true), []);
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(code);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch (err) {
+      setCopied(false);
+    }
+  };
 
   if (!mounted) return null;
 
   return (
-    <div className="bg-[#2e3440] rounded-lg overflow-hidden shadow-md">
-  {/* Carbon-style window header */}
-  <div className="flex space-x-2 px-4 py-2 bg-[#21252b]">
-    <span className="dot w-3 h-3 rounded-full bg-[#ff5f56]" /> 
-    <span className="dot w-3 h-3 rounded-full bg-[#ffbd2e]" /> 
-    <span className="dot w-3 h-3 rounded-full bg-[#27c93f]" />
-    <div>{language}</div>
-  </div>
+    <div className=" rounded-lg overflow-hidden shadow-md" style={{ backgroundColor: themes[theme].headerBg }}>
+      {/* Carbon-style window header */}
+      <div className="flex space-x-2 px-4 py-2 bg-[#21252b] items-center">
+        <span className="dot w-3 h-3 my-2 rounded-full bg-[#ff5f56]" /> 
+        <span className="dot w-3 h-3 my-2 rounded-full bg-[#ffbd2e]" /> 
+        <span className="dot w-3 h-3 my-2 rounded-full bg-[#27c93f]" />
+        <div className='ml-2 font-mono text-xs text-gray-300 flex-1'>{language}</div>
+        {showCopyButton && (
+          <button
+            onClick={handleCopy}
+            className="ml-auto px-3 py-1 rounded bg-purple-700 hover:bg-purple-800 text-white text-xs font-mono transition"
+          >
+            {copied ? "Copied!" : "Copy"}
+          </button>
+        )}
+      </div>
 
-  {/* Code block */}
-  <SyntaxHighlighter language={language} style={oneDark} customStyle={{ 
-                      margin: '1rem', 
-                      padding: '1rem',
-                      backgroundColor: 'transparent',
+      {/* Code block */}
+      <div className='p-4'>
+      <SyntaxHighlighter
+                    language={language}
+                    style={themes[theme].style}
+                    customStyle={{ 
+                      margin: 0, 
+                      padding: 0,
+                      backgroundColor: themes[theme].headerBg,
                       minWidth: '100%',
                       width: 'fit-content',
-                      minHeight: '100%'
+                      minHeight: '100%',
+                      border : 'none',
                     }}
                     codeTagProps={{
                       style: {
                         fontFamily: '"Fira code", "Fira Mono", monospace',
                         fontSize: '1rem',
-                        lineHeight: '1.5em',
+                        lineHeight: themes[theme].lineHeight,
                       }
                     }}
                     lineProps={{
@@ -49,8 +74,9 @@ export default function ClientCodeBlock({ code, language }: CodeBlockProps) {
                     }}
                     wrapLines={true}
                   >
-    {code}
-  </SyntaxHighlighter>
-</div>
+                    {code}
+                  </SyntaxHighlighter>
+                  </div>
+    </div>
   );
 }

@@ -4,6 +4,7 @@ export interface ISnippet {
   title: string;
   code: string;
   language: string;
+  theme : string;
   createdAt: Date;
 }
 
@@ -20,6 +21,11 @@ const SnippetSchema = new Schema<ISnippet>(
     language: {
       type: String,
       required: [true, 'Language is required.'],
+    },
+    theme :{
+      type : String,
+      required: [true, 'Theme is required.'],
+      default : 'xonokai'
     },
     createdAt: {
       type: Date,
