@@ -13,6 +13,7 @@
     "html2canvas": "^1.4.1",
     "mongoose": "^8.17.0",
     "next": "15.4.5",
+    "postcss-preset-env": "^10.2.4",
     "prismjs": "^1.30.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",

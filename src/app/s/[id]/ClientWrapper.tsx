@@ -8,32 +8,36 @@ const downloadImage = async () => {
   const element = document.getElementById("snippet-box");
   if (!element) return;
 
-  // Walk through all child nodes and patch colors
-  const allElements = element.querySelectorAll("*");
+  const excludedEls = element.querySelectorAll(".capture-exclude");
+  excludedEls.forEach((el) => ((el as HTMLElement).style.display = "none"));
 
-  const buttons = element.querySelectorAll('.capture-exclude');
-  buttons.forEach((button) => (button as HTMLElement).style.display = 'none');
-
-  allElements.forEach((el) => {
-  const computed = window.getComputedStyle(el);
-
-  // Cast only if it's an HTMLElement
-  if (el instanceof HTMLElement) {
-    if (computed.color.includes("oklch")) {
-      el.style.color = "#ffffff";
-    }
-    if (computed.backgroundColor.includes("oklch")) {
-      el.style.backgroundColor = "#0f172a";
-    }
+  const langLabel = element.querySelector(".language-label") as HTMLElement;
+  let prevLangStyle = "";
+  if (langLabel) {
+    prevLangStyle = langLabel.style.top;
+    langLabel.style.top = "50%";
+    langLabel.style.transform = "translateY(-50%)";
+    langLabel.style.position = "relative";
   }
-});
 
+  const prevBg = element.style.background;
+  element.style.background = "transparent";
 
-  // Also patch the root element
-  element.style.backgroundColor = "#0f172a";
-  element.style.color = "#ffffff";
+  const canvas = await html2canvas(element, {
+    backgroundColor: null,
+    scale: 2,
+    useCORS: true,
+  });
 
-  const canvas = await html2canvas(element);
+  element.style.background = prevBg;
+
+  if (langLabel) {
+    langLabel.style.top = prevLangStyle;
+    langLabel.style.transform = "";
+    langLabel.style.position = "";
+  }
+
+  excludedEls.forEach((el) => ((el as HTMLElement).style.display = ""));
 
   const dataUrl = canvas.toDataURL("image/png");
   const a = document.createElement("a");
@@ -53,12 +57,12 @@ export default function ClientWrapper({
 }: {
   code: string;
   language: string;
-  theme : ThemeKeys;
+  theme: ThemeKeys;
 }) {
   return (
     <>
       <div id="snippet-box" className="bg-gray-800 p-6 rounded-lg">
-        <ClientCodeBlock code={code} language={language} theme={theme}/>
+        <ClientCodeBlock code={code} language={language} theme={theme} />
       </div>
       <div className="flex justify-center">
         <button
