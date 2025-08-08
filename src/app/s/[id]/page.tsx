@@ -52,7 +52,7 @@ export default async function SnippetPage({ params }: { params: Promise<{ id: st
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-200 p-8">
+    <div className="min-h-screen bg-gray-800 text-gray-200 p-8">
       <div className="max-w-4xl mx-auto my-12">
         <h1 className="text-3xl font-bold mb-4 text-white">{snippet.title}</h1>
         <ClientWrapper code={snippet.code} language={snippet.language} theme={snippet.theme}/>
