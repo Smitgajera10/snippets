@@ -25,6 +25,7 @@ export default function ClientCodeBlock({
       setTimeout(() => setCopied(false), 1500);
     } catch (err) {
       setCopied(false);
+      console.log(err);
     }
   };
 

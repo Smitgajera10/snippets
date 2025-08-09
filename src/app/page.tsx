@@ -1,7 +1,6 @@
 "use client";
 import { useState, FormEvent, useEffect } from "react";
 import Head from "next/head";
-import Prism from "prismjs";
 import Editor from "react-simple-code-editor";
 import "prismjs/themes/prism-okaidia.css";
 import detect from "flourite";
